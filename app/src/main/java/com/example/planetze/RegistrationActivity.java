@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.planetze.models.User;
+
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     // UI elements
