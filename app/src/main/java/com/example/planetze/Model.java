@@ -60,6 +60,44 @@ public class Model {
             }
         });
     }
+    public void registerUser(String email, String password, Consumer<String> callback) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    callback.accept("Registration failed");
+                }
+                else {
+                    callback.accept("Registration successful");
+                }
+            }
+        });
+    }
+    public void postUser(User user, Consumer<Boolean> callback) {
+        usersRef.child(user.userID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callback.accept(task.isSuccessful());
+            }
+        });
+    }
+    public void getQuestions(Consumer<List<Question>> callback) {
+        questionsRef.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Question> questions = new ArrayList<>();
+                for (DataSnapshot userSnapShot: snapshot.getChildren()) {
+                    Question q = userSnapShot.getValue(Question.class);
+                    questions.add(q);
+                }
+                callback.accept(questions);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 }
