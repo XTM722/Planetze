@@ -1,5 +1,5 @@
 package com.example.planetze;
-
+import com.example.planetze.MainActivity;
 import com.example.planetze.models.User;
 
 
@@ -17,7 +17,7 @@ public class Presenter {
 
         model.authenticate(email, password, (User user) -> {
             if (user == null) view.failedToLogin();
-            else view.redirectToDashboard(User.userID);
+            else view.redirectToDashboard(user.userID);
         });
     }
 }
