@@ -3,7 +3,6 @@ package com.example.planetze;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -13,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.example.planetze.Presenter;
+import com.example.planetze.models.User;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     //for remember me
@@ -24,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText emailEditText, passowordEditText;
     private Button loginButton, registerButton;
     private CheckBox rememberMeCheckBox;
-
 
     // MVP Pattern
     private Model model;
@@ -50,13 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor = preferences.edit();
         checkSharedPreferences();
 
+
         // MVP Pattern
         model = Model.getInstance();
         presenter = new Presenter(model, this);
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         if (view == loginButton){
             logIn();
         }
@@ -85,25 +87,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
 
         if (email.isEmpty()) {
-            emailEditText.setError("Email is required!");
+            emailEditText.setError("Email address is required!");
             emailEditText.requestFocus();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.setError("Please provide valid email!");
+            emailEditText.setError("Please provide a valid email!");
             emailEditText.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            passowordEditText.setError("password is required!");
+            passowordEditText.setError("Password is required!");
             passowordEditText.requestFocus();
             return;
         }
 
         if (password.length() < 6) {
-            passowordEditText.setError("Min password length should be 6 characters!");
+            passowordEditText.setError("Minimum password length should be 6 characters!");
             passowordEditText.requestFocus();
             return;
         }
@@ -113,12 +115,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void redirectToDashboard(String userID) {
-        Intent intent = new Intent(this,DashboardActivity.class);
-        intent.putExtra("currentUserID", userID);
-        startActivity(intent);
+       model.getUser(userID, (User user) -> {
+           if(user == null) {
+               Toast.makeText(this, "Failed to redirect to Dashboard", Toast.LENGTH_LONG).show();
+               return;
+           }
+           Intent intent = new Intent(this, DashboardActivity.class);
+           intent.putExtra("user", user);
+           startActivity(intent);
+       });
+
     }
 
     public void failedToLogin() {
-        Toast.makeText(this, "failed to login.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Failed to login.", Toast.LENGTH_LONG).show();
     }
 }
