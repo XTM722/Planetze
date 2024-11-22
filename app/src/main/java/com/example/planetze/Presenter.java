@@ -1,7 +1,7 @@
 package com.example.planetze;
 import com.example.planetze.MainActivity;
+import com.example.planetze.Model;
 import com.example.planetze.models.User;
-
 
 public class Presenter {
     private Model model;
