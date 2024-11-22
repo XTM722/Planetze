@@ -64,12 +64,10 @@ public class Model {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    callback.accept("Registration failed");
-                }
-                else {
-                    callback.accept("Registration successful");
-                }
+                System.out.println("createUserWithEmail:onComplete:" + task.isSuccessful());
+                System.out.println("createUserWithEmail:onComplete: " + task.getResult().getUser().getUid());
+                System.out.println("createUserWithEmail:onComplete: " + task.getResult().getUser().getEmail());
+                callback.accept(task.isSuccessful()? auth.getUid() : null);
             }
         });
     }
@@ -78,6 +76,20 @@ public class Model {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 callback.accept(task.isSuccessful());
+            }
+        });
+    }
+
+    public void getUser(String userID, Consumer<User> callback) {
+        usersRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener()  {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                callback.accept(user);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
