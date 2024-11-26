@@ -19,7 +19,9 @@
             android:name=".RegistrationActivity"
             android:exported="false" />
 
-            
+        <activity
+            android:name=".QuestionsActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
