@@ -7,4 +7,10 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string-array name="activity_types">
+        <item>Transportation</item>
+        <item>Food Consumption</item>
+        <item>Shopping/Consumption</item>
+        <item>Energy Use</item>
+    </string-array>
 </resources>

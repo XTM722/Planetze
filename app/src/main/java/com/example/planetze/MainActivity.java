@@ -115,17 +115,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void redirectToDashboard(String userID) {
-       model.getUser(userID, (User user) -> {
-           if(user == null) {
-               Toast.makeText(this, "Failed to redirect to Dashboard", Toast.LENGTH_LONG).show();
-               return;
-           }
-           Intent intent = new Intent(this, DashboardActivity.class);
-           intent.putExtra("user", user);
-           startActivity(intent);
-       });
+        model.getUser(userID, (User user) -> {
+            if (user == null) {
+                Toast.makeText(this, "Failed to redirect to Eco Tracker", Toast.LENGTH_LONG).show();
+                return;
+            }
+            // Debug log for navigation
+            android.util.Log.d("LoginFlow", "Redirecting to EcoTrackerActivity");
 
+            Intent intent = new Intent(this, EcoTrackerActivity.class);
+            startActivity(intent);
+        });
     }
+
+
 
     public void failedToLogin() {
         Toast.makeText(this, "Failed to login.", Toast.LENGTH_LONG).show();
