@@ -12,17 +12,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Activity Log Entry"
-        android:textSize="16sp"
-        android:padding="8dp" />
+        android:text="Log Entry"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-    <!-- Button for deleting the log entry -->
+    <!-- ImageButton for deleting the log entry -->
     <ImageButton
         android:id="@+id/button_delete_log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_delete"
         android:contentDescription="Delete"
-        android:background="?attr/selectableItemBackground"
-        android:padding="8dp" />
+        android:src="@android:drawable/ic_menu_delete" />
+
+    <!-- ImageButton for editing the log entry -->
+    <ImageButton
+        android:id="@+id/button_edit_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="Edit Log"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp" />
+
 </LinearLayout>

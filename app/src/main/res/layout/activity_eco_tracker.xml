@@ -1,63 +1,94 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Eco Tracker"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="8dp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edittext_transportation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Transportation (e.g., car, bus)"
-        android:inputType="numberDecimal" />
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eco Tracker"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_gravity="center"
+            android:paddingBottom="16dp" />
 
-    <EditText
-        android:id="@+id/edittext_food"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Food (e.g., diet, food miles)"
-        android:inputType="numberDecimal" />
+        <Button
+            android:id="@+id/button_drive_vehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Drive Personal Vehicle" />
 
-    <EditText
-        android:id="@+id/edittext_energy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Energy (e.g., electricity, gas)"
-        android:inputType="numberDecimal" />
+        <Button
+            android:id="@+id/button_public_transport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take Public Transportation" />
 
-    <EditText
-        android:id="@+id/edittext_consumption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Consumption (e.g., goods, services)"
-        android:inputType="numberDecimal" />
+        <Button
+            android:id="@+id/button_cycling_walking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cycling or Walking" />
 
-    <Button
-        android:id="@+id/button_log_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Log Activity" />
+        <Button
+            android:id="@+id/button_flight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flight (Short-Haul or Long-Haul)" />
 
-    <TextView
-        android:id="@+id/textview_total_emissions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Total Daily CO2e Emissions: 0.0 kg"
-        android:textSize="16sp"
-        android:padding="8dp" />
+        <Button
+            android:id="@+id/button_meal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meal" />
 
-    <ListView
-        android:id="@+id/listview_logged_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <Button
+            android:id="@+id/button_new_clothes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buy New Clothes" />
+
+        <Button
+            android:id="@+id/button_electronics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buy Electronics" />
+
+        <Button
+            android:id="@+id/button_other_purchases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other Purchases" />
+
+        <Button
+            android:id="@+id/button_energy_bills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Energy Bills" />
+
+        <TextView
+            android:id="@+id/textview_total_emissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_gravity="center"
+            android:text="Total Daily CO2e Emissions: 0.00 kg" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_logged_data"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_marginTop="16dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" />
+
+
+
+    </LinearLayout>
+</ScrollView>
