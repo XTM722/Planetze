@@ -1,0 +1,63 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eco Tracker"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="8dp" />
+
+    <EditText
+        android:id="@+id/edittext_transportation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Transportation (e.g., car, bus)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edittext_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Food (e.g., diet, food miles)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edittext_energy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Energy (e.g., electricity, gas)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edittext_consumption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Consumption (e.g., goods, services)"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/button_log_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Activity" />
+
+    <TextView
+        android:id="@+id/textview_total_emissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Daily CO2e Emissions: 0.0 kg"
+        android:textSize="16sp"
+        android:padding="8dp" />
+
+    <ListView
+        android:id="@+id/listview_logged_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
