@@ -33,6 +33,7 @@ public class EcoTrackerActivity extends AppCompatActivity {
         textViewTotalEmissions = findViewById(R.id.textview_total_emissions);
         recyclerViewLoggedData = findViewById(R.id.recyclerview_logged_data);
         recyclerViewLoggedData.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewLoggedData.setNestedScrollingEnabled(false); // Disable nested scrolling for smooth behavior
 
         // Initialize data
         activityLog = new ArrayList<>();
@@ -75,6 +76,7 @@ public class EcoTrackerActivity extends AppCompatActivity {
         buttonOtherPurchases.setOnClickListener(v -> showOtherPurchasesDialog(null, -1));
         buttonEnergyBills.setOnClickListener(v -> showEnergyBillsDialog(null, -1));
     }
+
 
     private void showOwnershipDialog() {
         new AlertDialog.Builder(this)
