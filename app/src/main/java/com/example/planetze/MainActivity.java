@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // UI
     private EditText emailEditText, passowordEditText;
-    private Button loginButton, registerButton;
+    private Button loginButton, registerButton, forgotPasswordButton;
     private CheckBox rememberMeCheckBox;
 
     // MVP Pattern
@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         passowordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+        forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
         rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
 
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
-
+        forgotPasswordButton.setOnClickListener(this);
         // handle "Remember Me"
         preferences = getSharedPreferences("b07", Context.MODE_PRIVATE);
         editor = preferences.edit();
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == registerButton) {
             startActivity(new Intent(this, RegistrationActivity.class));
+        }
+        if (view == forgotPasswordButton) {
+            startActivity(new Intent(this, ForgotPasswordActivity.class));
         }
     }
 
