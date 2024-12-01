@@ -121,16 +121,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void redirectToDashboard(String userID) {
         model.getUser(userID, (User user) -> {
             if (user == null) {
-                Toast.makeText(this, "Failed to redirect to Eco Tracker", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to redirect to Main Menu", Toast.LENGTH_LONG).show();
                 return;
             }
-            // Debug log for navigation
-            android.util.Log.d("LoginFlow", "Redirecting to EcoTrackerActivity");
-
-            Intent intent = new Intent(this, EcoTrackerActivity.class);
+            // Redirect to the Main Menu
+            Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         });
     }
+
 
 
 
