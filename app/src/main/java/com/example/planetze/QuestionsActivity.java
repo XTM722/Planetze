@@ -132,9 +132,14 @@ public class QuestionsActivity extends AppCompatActivity {
                         "20,000–25,000 km (12,000–15,000 miles)","More than 25,000 km (15,000 miles)"}),
                 new Question("q4", "How often do you use public transportation (bus, train,\n" +
                         "subway)", new String[]{"Never" , "Occasionally (1-2 times/week)" , "Frequently (3-4 times/week)" , "Always (5+ times/week)"}),
+<<<<<<< HEAD
                 new Question("q5", ": How much time do you spend on public transport\n" +
                         "per week  (bus, train," +
                         "subway)", new String[]{"Under 1 hour" , "1-3 hours" , "3-5 hours","5-10 hours" , "More than 10 hours"}),
+=======
+                new Question("q5", "How many short-haul flights (less than 1,500 km / 932 miles) have you\n" +
+                        "taken in the past year?", new String[]{"Under 1 hour" , "1-3 hours" , "3-5 hours","5-10 hours" , "More than 10 hours"}),
+>>>>>>> 9c8eca24cf9cf68c31d8046f5e8320f56903d29a
                 new Question("q6", ". How many short-haul flights (less than 1,500 km / 932 miles) have you\n" +
                         "taken in the past year?", new String[]{"None" , "1-2 flights", "3-5 flights", "6-10 flights", "More than 10 flights"}),
                 new Question("q7", "How many long-haul flights (more than 1,500 km / 932 miles) have you\n" +
@@ -200,8 +205,12 @@ public class QuestionsActivity extends AppCompatActivity {
                         "past year?", new String[]{"None",
                         "1",
                         "2",
+<<<<<<< HEAD
                         "3 ",
                         "4 or more"}),
+=======
+                        "3 or more"}),
+>>>>>>> 9c8eca24cf9cf68c31d8046f5e8320f56903d29a
                 new Question("q21", "How often do you recycle?", new String[]{"Never",
                         "Occasionally",
                         "Frequently",
