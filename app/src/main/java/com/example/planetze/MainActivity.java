@@ -125,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
             // Redirect to the Main Menu
-            Intent intent = new Intent(this, MainMenuActivity.class);
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra("user", user); // Ensured the user object was passed.
             startActivity(intent);
         });
     }
