@@ -15,9 +15,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Model {
     private static Model instance;
@@ -26,7 +33,7 @@ public class Model {
     private DatabaseReference questionSetsRef;
     private FirebaseAuth auth;
 
-    private Model() {
+    public Model() {
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
         questionSetsRef = FirebaseDatabase.getInstance().getReference("Questions");
         auth = FirebaseAuth.getInstance();
@@ -116,6 +123,141 @@ public class Model {
         });
     }
 
+    public void getActivityLog(String userID, Consumer<List<String>> callback) {
+        usersRef.child(userID).child("activityLog").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> activityLog = new ArrayList<>();
+                for (DataSnapshot logSnapshot : snapshot.getChildren()) {
+                    String logEntry = logSnapshot.getValue(String.class);
+                    if (logEntry != null) {
+                        activityLog.add(logEntry);
+                    }
+                }
+                callback.accept(activityLog);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.accept(new ArrayList<>());
+            }
+        });
+    }
+
+    public void addActivityLog(String userID, String logEntry, Consumer<Boolean> callback) {
+        DatabaseReference userActivityLogRef = usersRef.child(userID).child("activityLog");
+        userActivityLogRef.push().setValue(logEntry)
+                .addOnCompleteListener(task -> {
+                    callback.accept(task.isSuccessful());
+                });
+    }
+
+    public String extractCategory(String activityType) {
+        if (activityType.contains("Vehicle") || activityType.contains("Transportation") ||
+                activityType.contains("Flight") || activityType.contains("Public Transport")) {
+            return "Transportation";
+        } else if (activityType.contains("Meal") || activityType.contains("Food")) {
+            return "Food";
+        } else if (activityType.contains("Energy Bills") || activityType.contains("Electricity") ||
+                activityType.contains("Gas")) {
+            return "Energy";
+        } else if (activityType.contains("Clothes") || activityType.contains("Electronics") ||
+                activityType.contains("Purchases") || activityType.contains("Shopping")) {
+            return "Shopping";
+        }
+        return "Other";
+    }
+
+    public ParsedLogEntry parseLogEntry(String logEntryStr) {
+        try {
+            // 假设日志格式为 "ActivityType - Emissions kg CO2e - yyyy-MM-dd"
+            String[] parts = logEntryStr.split(" - ");
+            if (parts.length < 3) {
+                return null;
+            }
+            String activityType = parts[0];
+            double emissions = Double.parseDouble(parts[1].split(" ")[0]);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = sdf.parse(parts[2]);
+            return new ParsedLogEntry(activityType, emissions, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<EmissionsAnalyticsActivity.CategoryBreakdown> calculateEmissionBreakdown(List<ParsedLogEntry> activityLog) {
+        double totalEmissions = calculateTotalEmissions(activityLog);
+        Map<String, Double> categoryEmissions = new HashMap<>();
+
+        for (ParsedLogEntry entry : activityLog) {
+            String category = extractCategory(entry.activityType);
+            categoryEmissions.put(category,
+                    categoryEmissions.getOrDefault(category, 0.0) + entry.emissions);
+        }
+
+        List<EmissionsAnalyticsActivity.CategoryBreakdown> breakdownList = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : categoryEmissions.entrySet()) {
+            double percentage = (entry.getValue() / totalEmissions) * 100;
+            breakdownList.add(new EmissionsAnalyticsActivity.CategoryBreakdown(
+                    entry.getKey(),
+                    entry.getValue(),
+                    percentage
+            ));
+        }
+
+        return breakdownList;
+    }
+
+    public double calculateTotalEmissions(List<ParsedLogEntry> activityLog) {
+        double totalEmissions = 0.0;
+        for (ParsedLogEntry entry : activityLog) {
+            totalEmissions += entry.emissions;
+        }
+        return totalEmissions;
+    }
+
+    public List<ParsedLogEntry> filterActivityLogByTimePeriod(List<ParsedLogEntry> activityLog, int timePeriodIndex) {
+        Calendar calendar = Calendar.getInstance();
+        Date now = new Date();
+        calendar.setTime(now);
+
+        switch (timePeriodIndex) {
+            case 0: // Weekly
+                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                break;
+            case 1: // Monthly
+                calendar.add(Calendar.MONTH, -1);
+                break;
+            case 2: // Yearly
+                calendar.add(Calendar.YEAR, -1);
+                break;
+            default:
+                break;
+        }
+
+        Date thresholdDate = calendar.getTime();
+
+        List<ParsedLogEntry> filteredLog = new ArrayList<>();
+        for (ParsedLogEntry entry : activityLog) {
+            if (!entry.date.before(thresholdDate)) {
+                filteredLog.add(entry);
+            }
+        }
+        return filteredLog;
+    }
+
+    public static class ParsedLogEntry {
+        public String activityType;
+        public double emissions;
+        public Date date;
+
+        public ParsedLogEntry(String activityType, double emissions, Date date) {
+            this.activityType = activityType;
+            this.emissions = emissions;
+            this.date = date;
+        }
+    }
 
 
 
