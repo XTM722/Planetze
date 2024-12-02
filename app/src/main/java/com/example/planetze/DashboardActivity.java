@@ -2,7 +2,6 @@ package com.example.planetze;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -29,10 +28,11 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Check user data
         user = (User) getIntent().getSerializableExtra("user");
-        if ((user.answers == null) || (user.answers.size() == 0)) {
+        if ((user == null) || (user.answers.isEmpty())) {
             Intent intent = new Intent(this, QuestionsActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
+            finish();
         }
 
         // Initialize ExpandableListView for Main Menu
@@ -58,6 +58,24 @@ public class DashboardActivity extends AppCompatActivity {
                 case "Eco Gauge Summary":
                     startActivity(new Intent(this, EcoGaugeActivity.class));
                     break;
+                case "Redo Questionnaire":
+                    if (user != null){
+                        user.answers = new HashMap<>();
+                        Intent intent = new Intent(this, QuestionsActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(this, "User data not found!", Toast.LENGTH_SHORT).show();
+
+                    }
+                    break;
+                    //Nioki part to be updated here , ScoreActivity and CompareActivity
+               /* case "Questionnaire Score Summary":
+                    startActivity(new Intent(this, QuestionsActivity.class));
+                    break;
+
+                */
                 default:
                     Toast.makeText(this, "Feature not implemented yet!", Toast.LENGTH_SHORT).show();
                     break;
@@ -71,6 +89,7 @@ public class DashboardActivity extends AppCompatActivity {
         mainMenuItems = new ArrayList<>();
         mainMenuItems.add("Eco Tracker");
         mainMenuItems.add("Eco Gauge");
+        mainMenuItems.add("Questionnaire");
 
         // Sub-menu items
         subMenuItems = new HashMap<>();
@@ -83,7 +102,13 @@ public class DashboardActivity extends AppCompatActivity {
         List<String> ecoGaugeSubMenu = new ArrayList<>();
         ecoGaugeSubMenu.add("Eco Gauge Summary");
 
+        List<String> questionnaireSubMenu = new ArrayList<>();
+        questionnaireSubMenu.add("Redo Questionnaire");
+        questionnaireSubMenu.add("Questionnaire Score Summary");
+        questionnaireSubMenu.add("Questionnaire Compare Summary");
+
         subMenuItems.put(mainMenuItems.get(0), ecoTrackerSubMenu); // Eco Tracker
-        subMenuItems.put(mainMenuItems.get(1), ecoGaugeSubMenu);   // Eco Gauge
+        subMenuItems.put(mainMenuItems.get(1),  ecoGaugeSubMenu);   // Eco Gauge
+        subMenuItems.put(mainMenuItems.get(2),  questionnaireSubMenu);   // Questionnaire
     }
 }
