@@ -11,7 +11,31 @@
     <string name="password_reset_description">Enter your registered email address below, and we’ll send you a link to reset your password.</string>
     <string name="password_reset_link">Send Reset Link</string>
     <string name="back_to_login">Back To Login</string>
+    <string name="welcomeTitle">Welcome To Planetze</string>
+    <string name="welcomeDescription">Your guide to living sustainably and making impactful changes every day for a greener planet.</string>
+    <string name="circular_icons">circular icons</string>
+    <string name="penguin_image">penguin image</string>
+    <string name="letsGetStartedText">LET\'S GET STARTED</string>
     <string name="email_icon_description" />
+    <string name="explore_our_features">Explore Our Features</string>
+    <string name="carbon_footprint_icon">Carbon Footprint Icon</string>
+    <string name="track_your_carbon_footprint">Track Your Carbon Footprint</string>
+    <string name="eco_tracker_description">Monitor daily activities to calculate your carbon emissions.</string>
+    <string name="personalized_recommendations_icon">Personalized Recommendations Icon</string>
+    <string name="see_your_progress">See Your Progress</string>
+    <string name="see_your_progress_description">Track emission reductions with visual reports.</string>
+    <string name="carbon_offset_icon">Carbon Footprint Icon</string>
+    <string name="offset_your_emissions">Offset Your Emissions</string>
+    <string name="offset_your_emissions_description">Choose actions to offset your carbon footprint.</string>
+    <string name="carbon_learn_icon">Carbon_learn_icon</string>
+    <string name="learn_and_stay_inspired">Learn and Stay Inspired</string>
+    <string name="learn_and_stay_inspired_description">Access resources on sustainable living.</string>
+    <string name="carbon_agent_icon">Carbon_Agent_icon</string>
+    <string name="chat_with_your_eco_assistant">Chat with Your Eco Assistant</string>
+    <string name="chat_with_your_eco_assistant_description">Get eco advice from our AI assistant.</string>
+    <string name="next">NEXT</string>
+    <string name="intro_question_message">Welcome! Let’s calculate your annual carbon footprint based on your lifestyle. This quick, one-time assessment will provide valuable insights into your environmental impact and help you make informed, sustainable choices. You can always choose to update your information later.</string>
+    <string name="i_am_ready">I AM READY</string>
     <string-array name="activity_types">
         <item>Transportation</item>
         <item>Food Consumption</item>
