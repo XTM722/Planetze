@@ -58,6 +58,19 @@ public class DashboardActivity extends AppCompatActivity {
                 case "Eco Gauge Summary":
                     startActivity(new Intent(this, EcoGaugeActivity.class));
                     break;
+                case "Emissions Analytics":
+                    Model.getInstance().getActivityLog(user.userID, activityLog -> {
+                        if (activityLog != null && !activityLog.isEmpty()) {
+                            // Activity log exists, navigate to EmissionsAnalyticsActivity
+                            Intent intent = new Intent(this, EmissionsAnalyticsActivity.class);
+                            intent.putStringArrayListExtra("activityLog", new ArrayList<>(activityLog));
+                            startActivity(intent);
+                        } else {
+                            // No activity log, show a message and do not navigate
+                            Toast.makeText(this, "No activity log found. Please fill in your log activities first.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    break;
                 default:
                     Toast.makeText(this, "Feature not implemented yet!", Toast.LENGTH_SHORT).show();
                     break;
@@ -82,6 +95,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         List<String> ecoGaugeSubMenu = new ArrayList<>();
         ecoGaugeSubMenu.add("Eco Gauge Summary");
+        ecoGaugeSubMenu.add("Emissions Analytics");
 
         subMenuItems.put(mainMenuItems.get(0), ecoTrackerSubMenu); // Eco Tracker
         subMenuItems.put(mainMenuItems.get(1), ecoGaugeSubMenu);   // Eco Gauge
