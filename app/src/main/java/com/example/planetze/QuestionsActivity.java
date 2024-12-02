@@ -88,7 +88,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(QuestionsActivity.this, "Questions has been submitted successfully!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(QuestionsActivity.this, DashboardActivity.class);
+                        Intent intent = new Intent(QuestionsActivity.this, CalculateScoresActivity.class);
                         intent.putExtra("user", user);
                         startActivity(intent);
                         finish();

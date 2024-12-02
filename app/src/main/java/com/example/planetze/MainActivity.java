@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Failed to redirect to Main Menu", Toast.LENGTH_LONG).show();
                 return;
             }
+
             // Redirect to the Main Menu
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra("user", user); // Ensured the user object was passed.

@@ -112,7 +112,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 return;
 
             }
-            User user = new User(userID, email, name);
+            User user = new User(userID, email, name,0.0);
             model.postUser(user, (Boolean created) -> {
                 if(!created){
                     Toast.makeText(RegistrationActivity.this, "Failed to create a user", Toast.LENGTH_LONG).show();
