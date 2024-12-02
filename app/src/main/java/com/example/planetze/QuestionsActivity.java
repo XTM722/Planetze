@@ -72,6 +72,10 @@ public class QuestionsActivity extends AppCompatActivity {
                 Question question = questionSet.questions.get(currentQuestionIndex);
 
                 int selectedID = radioGroup.getCheckedRadioButtonId();
+                if (selectedID == -1){
+                    Toast.makeText(QuestionsActivity.this,"Please select an option before proceeding.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 RadioButton selectedButton = findViewById(selectedID);
                 String selectedOption = (String) selectedButton.getText();
                 user.answers.put(question.questionID, selectedOption);
@@ -87,6 +91,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Intent intent = new Intent(QuestionsActivity.this, DashboardActivity.class);
                         intent.putExtra("user", user);
                         startActivity(intent);
+                        finish();
 
                     });
                 }
