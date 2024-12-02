@@ -42,4 +42,19 @@
         <item>Shopping/Consumption</item>
         <item>Energy Use</item>
     </string-array>
+
+    <!-- item_category_breakdown -->
+    <string name="sample_category">Sample Category</string>
+    <string name="sample_emissions">Sample emission</string>
+    <string name="category_name_description">Category Name</string>
+    <string name="emissions_description">Emissions Information</string>
+
+    <!-- activity_emissions_analytics -->
+    <string name="total_emissions_text">Total CO2e Emissions: 0.00 kg</string>
+    <string name="total_emissions_description">Displays the total CO2e emissions</string>
+    <string name="tab_weekly">Weekly</string>
+    <string name="tab_monthly">Monthly</string>
+    <string name="tab_yearly">Yearly</string>
+    <string name="category_breakdown_list_description">List of emissions breakdown by category</string>
+
 </resources>

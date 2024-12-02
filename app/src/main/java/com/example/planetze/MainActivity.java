@@ -157,12 +157,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
             finish();
+
+            }
         });
     }
+
 
 
 
     public void failedToLogin() {
         Toast.makeText(this, "Failed to login.", Toast.LENGTH_LONG).show();
     }
+
 }
