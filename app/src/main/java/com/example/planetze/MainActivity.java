@@ -16,8 +16,9 @@ import androidx.annotation.NonNull;
 import com.example.planetze.Presenter;
 import com.example.planetze.models.User;
 
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    //for remember me
+    //for remember me and first time login
     private SharedPreferences preferences;
 
     private SharedPreferences.Editor editor;
@@ -114,6 +115,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        // Simulate login by using a dummy user ID. In a real-world application, you would use the provided email and password to authenticate the user and retrieve their user ID.
+        String firstTimeKey = "isFirstTimeUser_" + email;
+        if(!preferences.contains(firstTimeKey)){
+            //Initialize shared preference for new account
+            editor.putBoolean(firstTimeKey, true);
+            editor.apply();
+        }
+
+
+
         // Use MVP pattern to login
         presenter.login(email, password);
     }
@@ -121,14 +132,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void redirectToDashboard(String userID) {
         model.getUser(userID, (User user) -> {
             if (user == null) {
-                Toast.makeText(this, "Failed to redirect to Eco Tracker", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to redirect to MainMenu", Toast.LENGTH_LONG).show();
                 return;
             }
-            // Debug log for navigation
-            android.util.Log.d("LoginFlow", "Redirecting to EcoTrackerActivity");
 
-            Intent intent = new Intent(this, EcoTrackerActivity.class);
-            startActivity(intent);
+            // Check if this is the first time the user is logging in by checking if the "isFirstTimeUser" shared preference key exists and has a value of true.
+            // If the key exists and has a value of true, show the IntroActivity.
+            // If the key does not exist or has a value of false, show the MainMenu.
+            String firstTimeKey = "isFirstTimeUser_" + userID;
+            boolean isFirstTime = preferences.getBoolean(firstTimeKey, true);
+            if(isFirstTime) {
+                // Show the IntroActivity and set the first time user to false
+                Intent intent = new Intent(this, IntroActivity.class);
+                startActivity(intent);
+
+                //set the first time user to false to avoid this message next time the app is opened
+                editor.putBoolean(firstTimeKey, false);
+                editor.apply();
+            }
+            // Redirect to MainMenu
+            else{
+                Intent intent =  new Intent(this,DashboardActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+            finish();
         });
     }
 
