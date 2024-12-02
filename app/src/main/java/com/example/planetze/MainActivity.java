@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Debug log for navigation
             android.util.Log.d("LoginFlow", "Redirecting to EcoTrackerActivity");
 
-            Intent intent = new Intent(this, EcoTrackerActivity.class);
+            Intent intent = new Intent(this, ScoreCompareActivity.class);
+            intent.putExtra("user", user);
             startActivity(intent);
         });
     }

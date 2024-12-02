@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#a9bcd0"
+    tools:ignore="ExtraText">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="531dp"
+        android:layout_height="291dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/tree" />
+
+    <Spinner
+        android:id="@+id/countrydropdown"
+        android:layout_width="256dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="132dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.251"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.858" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="223dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/planetze_logo" />
+
+    <TextView
+        android:id="@+id/userscore"
+        android:layout_width="256dp"
+        android:layout_height="44dp"
+        android:text="Your Score"
+        app:layout_constraintBottom_toTopOf="@+id/countryscore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.251"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countrydropdown"
+        app:layout_constraintVertical_bias="0.366" />
+
+    <TextView
+        android:id="@+id/countryscore"
+        android:layout_width="256dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="84dp"
+        android:text="Country Average Score"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.251"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
