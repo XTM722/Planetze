@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.planetze.models.User;
+
 public class IntroActivity extends AppCompatActivity {
 
     private LinearLayout introSection;
@@ -50,8 +52,11 @@ public class IntroActivity extends AppCompatActivity {
         imReadyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User user   = (User) getIntent().getSerializableExtra("user");
                 // Redirect to Annual Carbon Footprint Questionnaire as thi is the first time user must complete the questionnaire
-                Intent intent = new Intent(IntroActivity.this, QuestionsActivity.class);
+                //Intent intent = new Intent(IntroActivity.this, QuestionsActivity.class);
+                Intent intent = new Intent(IntroActivity.this, DashboardActivity.class);
+intent.putExtra("user", user);
                 startActivity(intent);
                 finish();
             }
