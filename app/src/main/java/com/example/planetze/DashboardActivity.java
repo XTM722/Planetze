@@ -8,17 +8,30 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
+import com.example.planetze.models.User;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    private User user; // user
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+
+        // check user data
+        user = (User) getIntent().getSerializableExtra("user");
+        if ((user == null) || (user.answers == null) || (user.answers.isEmpty())) {
+            Toast.makeText(this, "Please comple the required questions firsts.", Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(this, QuestionsActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
+        // Show a toast message when the user clicks on the bottom navigation item
 
         // Initialize BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -87,13 +100,22 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (id == R.id.menu_redo_survey) {
                 // Navigate to the Annual Survey activity
-                //startActivity(new Intent(this, AnnualSurveyActivity.class));
+                startActivity(new Intent(this, QuestionsActivity.class));
                 return true;
             } else if (id == R.id.menu_view_report) {
                 // Navigate to the Annual Report activity
-                //startActivity(new Intent(this, AnnualReportActivity.class));
+                Intent intent = new Intent(this, CalculateScoresActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
                 return true;
-            } else {
+            }
+            else if (id == R.id.menu_global_compare){
+                // Navigate to the Global Compare activity
+                Intent intent = new Intent(this, ScoreCompareActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                return true;
+            }else {
                 return false;
             }
         });

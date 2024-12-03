@@ -1,6 +1,9 @@
 package com.example.planetze.models;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Map;
 
 public class ScoreCalculate {
@@ -15,6 +18,9 @@ public class ScoreCalculate {
     static double clothe_score;
     static double consume_score;
     static Map<String, String> answers;
+    private static DatabaseReference mDatabase;
+
+
 
     //helper function
     public static double CalculateBillScore(double a, double b, double c, double d, double e) {
@@ -242,7 +248,7 @@ public class ScoreCalculate {
                 score = score + 6.6;
             }
 
-        }//q1 的 大括号
+        }//q1
         tran_score = score;
 
         //Part 2 Food
@@ -1645,7 +1651,7 @@ public class ScoreCalculate {
         if ("2".equals(answers.get("q20"))){
             score = score + 0.6;
         }
-        //具体数据不知道 等待piazza补充
+
         if ("3".equals(answers.get("q20"))){
             score = score + 0.9;
         }
@@ -1664,14 +1670,14 @@ public class ScoreCalculate {
             score = Device_Frequency_Buyer(answers.get("q21"),0.00075,0.0015,0.0025);
         }
 
-        //Q20 补充
+        //Q20 more
         if ("1".equals(answers.get("q18"))){
             score = Device_Frequency_Buyer(answers.get("q20"),0.045,0.06,0.09);
         }
         if ("2".equals(answers.get("q18"))){
             score = Device_Frequency_Buyer(answers.get("q20"),0.06,0.12,0.18);
         }
-        //多重数据 在问piazza
+
         if ("3".equals(answers.get("q18"))){
             score = Device_Frequency_Buyer(answers.get("q20"),0.09,0.18,0.27);
         }
@@ -1680,6 +1686,19 @@ public class ScoreCalculate {
         }
 
         user.score = score;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference userRef = mDatabase.child("Users").child(user.userID);
+        userRef.child("score").setValue(score)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                }
+                else {
+                }
+            });
+
+
+
     }
 
 }

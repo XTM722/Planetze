@@ -1,9 +1,11 @@
 package com.example.planetze;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -49,7 +51,7 @@ public class ScoreCompareActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("user");
         answers = user.answers;
-        //这个是什么意思
+
         model = Model.getInstance();
 
         countryscore = new CountryAverageScore();
@@ -58,7 +60,7 @@ public class ScoreCompareActivity extends AppCompatActivity {
         countryDropDown = findViewById(R.id.countrydropdown);
 
         String[] items = countryscore.countryavg.keySet().toArray(new String[0]);
-        //这步是什么意思
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         countryDropDown.setAdapter(adapter);
 
@@ -82,6 +84,18 @@ public class ScoreCompareActivity extends AppCompatActivity {
         TextView ComputeTextView = findViewById(R.id.userscore);
 
         ComputeTextView.setText("Your score: " + user.score);
+
+        Button b = findViewById(R.id.buttontodashboard);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // jump to SecondActivity
+                Intent intent = new Intent(ScoreCompareActivity.this, DashboardActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
 
 
     }

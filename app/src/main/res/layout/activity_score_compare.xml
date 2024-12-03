@@ -46,6 +46,8 @@
         android:layout_width="256dp"
         android:layout_height="44dp"
         android:text="Your Score"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/countryscore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.251"
@@ -55,13 +57,26 @@
 
     <TextView
         android:id="@+id/countryscore"
-        android:layout_width="256dp"
-        android:layout_height="56dp"
+        android:layout_width="262dp"
+        android:layout_height="70dp"
         android:layout_marginBottom="84dp"
         android:text="Country Average Score"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.251"
+        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttontodashboard"
+        android:layout_width="150dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:text="Dash Board"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

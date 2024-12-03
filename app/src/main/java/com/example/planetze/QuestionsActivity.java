@@ -1,5 +1,7 @@
 package com.example.planetze;
 
+import static com.example.planetze.models.ScoreCalculate.calculate;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -88,6 +90,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(QuestionsActivity.this, "Questions has been submitted successfully!", Toast.LENGTH_LONG).show();
+                        calculate(user);
                         Intent intent = new Intent(QuestionsActivity.this, CalculateScoresActivity.class);
                         intent.putExtra("user", user);
                         startActivity(intent);
