@@ -100,19 +100,24 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (id == R.id.menu_redo_survey) {
                 // Navigate to the Annual Survey activity
-                startActivity(new Intent(this, QuestionsActivity.class));
+                Intent intent = new Intent(DashboardActivity.this, QuestionsActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                finish();
                 return true;
             } else if (id == R.id.menu_view_report) {
                 // Navigate to the Annual Report activity
                 Intent intent = new Intent(this, CalculateScoresActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
+                finish();
                 return true;
             }
             else if (id == R.id.menu_global_compare){
                 // Navigate to the Global Compare activity
                 Intent intent = new Intent(this, ScoreCompareActivity.class);
                 intent.putExtra("user", user);
+                finish();
                 startActivity(intent);
                 return true;
             }else {

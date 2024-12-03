@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.planetze.models.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView userName, userEmail;
     private Button btnEditProfile, btnLogout, goBackButton;
+
+    private User user; // Example user object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
         goBackButton.setOnClickListener(v ->{
-            Intent intent = new Intent(this, DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            Intent intent = new Intent(ProfileActivity.this, DashboardActivity.class);
+            intent.putExtra("user", user); //Example
+            setResult(RESULT_OK, intent);
             finish();
         });
     }

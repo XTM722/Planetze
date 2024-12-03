@@ -53,7 +53,9 @@ public class CalculateScoresActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 跳转到 SecondActivity
                 Intent intent = new Intent(CalculateScoresActivity.this, DashboardActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
+                finish();
             }
         });
     }

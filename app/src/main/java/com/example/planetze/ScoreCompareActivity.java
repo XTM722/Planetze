@@ -94,6 +94,7 @@ public class ScoreCompareActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScoreCompareActivity.this, DashboardActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
+                finish();
             }
         });
 

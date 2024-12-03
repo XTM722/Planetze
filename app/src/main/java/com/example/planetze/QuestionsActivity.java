@@ -42,6 +42,11 @@ public class QuestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
         user = (User) getIntent().getSerializableExtra("user");
+        if (user == null) {
+            Toast.makeText(this, "User data is missing. Please restart the app", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
         currentQuestionIndex = 0;
         model = Model.getInstance();
         boolean addToFireBase = false;
@@ -71,6 +76,10 @@ public class QuestionsActivity extends AppCompatActivity {
         questionNextOrSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (user == null || user.answers == null) {
+                    Toast.makeText(QuestionsActivity.this,"User data is missing. Please restart the app", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Question question = questionSet.questions.get(currentQuestionIndex);
 
                 int selectedID = radioGroup.getCheckedRadioButtonId();
