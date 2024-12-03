@@ -1,12 +1,16 @@
 package com.example.planetze;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HabitSuggestionsActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_NOTIFICATION_PERMISSION = 1001; // Or any unique integer
 
     private SearchView searchView;
     private RecyclerView recyclerView;
@@ -37,6 +42,13 @@ public class HabitSuggestionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_suggestions);
+
+        // Request notification permission dynamically (for Android 13 and higher)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
 
         // Initialize UI components
         searchView = findViewById(R.id.searchView);
@@ -126,6 +138,22 @@ public class HabitSuggestionsActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Add this line
+
+        if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted! You can now set notifications.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission denied. Reminder notifications won't work.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
 
     private Habit getSelectedHabit() {
         for (Habit habit : habitList) {
@@ -198,10 +226,18 @@ public class HabitSuggestionsActivity extends AppCompatActivity {
         try {
             if (alarmManager != null) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                Toast.makeText(this, "Reminder set for " + habitTitle + " at " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
+        } catch (SecurityException e) {
+            Toast.makeText(this, "Exact alarm permission is required", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-            Toast.makeText(this, "Failed to set reminder: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
+
+
+
 }
