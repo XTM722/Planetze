@@ -56,5 +56,17 @@
     <string name="tab_monthly">Monthly</string>
     <string name="tab_yearly">Yearly</string>
     <string name="category_breakdown_list_description">List of emissions breakdown by category</string>
+    <string name="redo_survey">Redo Survey</string>
+    <string name="view_report">View Report</string>
+    <string name="eco_tracker">Eco Tracker</string>
+    <string name="eco_gauge">Eco Gauge</string>
+    <string name="annual_footprint">Annual Footprint</string>
+    <string name="profile">Profile</string>
+    <string name="tracker">Tracker</string>
+    <string name="habits">Habits</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
+
 
 </resources>
