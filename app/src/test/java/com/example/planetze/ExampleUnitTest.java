@@ -69,8 +69,4 @@ public class ExampleUnitTest {
         // Assert
         verify(view).failedToLogin();
     }
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
 }
