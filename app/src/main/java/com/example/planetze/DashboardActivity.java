@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -64,7 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, EcoTrackerActivity.class));
                 return true;
             } else if (id == R.id.menu_habit) {
-                // startActivity(new Intent(this, ****.class)); replace **** later on for Abdul part
+                startActivity(new Intent(this, HabitSuggestionsActivity.class)); // Navigate to Habit Suggestions
                 return true;
             } else {
                 return false;
@@ -87,11 +86,11 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (id == R.id.menu_redo_survey) {
                 // Navigate to the Annual Survey activity
-                //startActivity(new Intent(this, AnnualSurveyActivity.class));
+                // startActivity(new Intent(this, AnnualSurveyActivity.class));
                 return true;
             } else if (id == R.id.menu_view_report) {
                 // Navigate to the Annual Report activity
-                //startActivity(new Intent(this, AnnualReportActivity.class));
+                // startActivity(new Intent(this, AnnualReportActivity.class));
                 return true;
             } else {
                 return false;
