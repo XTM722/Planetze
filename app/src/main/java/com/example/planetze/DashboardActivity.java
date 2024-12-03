@@ -1,128 +1,103 @@
 package com.example.planetze;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ExpandableListView;
+import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.planetze.models.User;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardActivity extends AppCompatActivity {
-
-    private User user;
-    private ExpandableListView expandableListView;
-    private ExpandableListAdapter expandableListAdapter;
-    private List<String> mainMenuItems;
-    private HashMap<String, List<String>> subMenuItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Check user data
-        user = (User) getIntent().getSerializableExtra("user");
-        if ((user == null) || (user.answers.isEmpty())) {
-            Intent intent = new Intent(this, QuestionsActivity.class);
-            intent.putExtra("user", user);
-            startActivity(intent);
-            finish();
-        }
+        // Initialize BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        // Initialize ExpandableListView for Main Menu
-        expandableListView = findViewById(R.id.expandableListView);
-        initializeMenuData();
-        expandableListAdapter = new ExpandableListAdapter(this, mainMenuItems, subMenuItems);
-        expandableListView.setAdapter(expandableListAdapter);
+        // Handle navigation item clicks
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
 
-        // Handle navigation logic when a child item is clicked
-        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            String selectedItem = subMenuItems.get(mainMenuItems.get(groupPosition)).get(childPosition);
-
-            switch (selectedItem) {
-                case "Log Activities":
-                    startActivity(new Intent(this, EcoTrackerActivity.class));
-                    break;
-                case "Habit Suggestions":
-                    startActivity(new Intent(this, HabitSuggestionsActivity.class));
-                    break;
-                case "Calendar and Activity Management":
-                    startActivity(new Intent(this, CalendarActivity.class));
-                    break;
-                case "Eco Gauge Summary":
-                    startActivity(new Intent(this, EcoGaugeActivity.class));
-                    break;
-                case "Emissions Analytics":
-                    Model.getInstance().getActivityLog(user.userID, activityLog -> {
-                        if (activityLog != null && !activityLog.isEmpty()) {
-                            // Activity log exists, navigate to EmissionsAnalyticsActivity
-                            Intent intent = new Intent(this, EmissionsAnalyticsActivity.class);
-                            intent.putStringArrayListExtra("activityLog", new ArrayList<>(activityLog));
-                            startActivity(intent);
-                        } else {
-                            // No activity log, show a message and do not navigate
-                            Toast.makeText(this, "No activity log found. Please fill in your log activities first.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    break;
-                case "Redo Questionnaire":
-                    if (user != null){
-                        user.answers = new HashMap<>();
-                        Intent intent = new Intent(this, QuestionsActivity.class);
-                        intent.putExtra("user", user);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        Toast.makeText(this, "User data not found!", Toast.LENGTH_SHORT).show();
-
-                    }
-                    break;
-                    //Nioki part to be updated here , ScoreActivity and CompareActivity
-               /* case "Questionnaire Score Summary":
-                    startActivity(new Intent(this, QuestionsActivity.class));
-                    break;
-
-                */
-                default:
-                    Toast.makeText(this, "Feature not implemented yet!", Toast.LENGTH_SHORT).show();
-                    break;
+            if (id == R.id.nav_eco_tracker) {
+                // Show PopupMenu for Tracker and Habit
+                View trackerView = findViewById(R.id.nav_eco_tracker); // Anchor for PopupMenu
+                showEcoTrackerMenu(trackerView);
+                return true;
+            } else if (id == R.id.nav_eco_gauge) {
+                startActivity(new Intent(this, EcoGaugeActivity.class));
+                return true;
+            } else if (id == R.id.nav_annual_footprint) {
+                // Show PopupMenu for Annual Footprint
+                View footprintView = findViewById(R.id.nav_annual_footprint); // Anchor for PopupMenu
+                showAnnualFootprintMenu(footprintView);
+                return true;
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            } else {
+                return false;
             }
-            return false;
         });
     }
 
-    private void initializeMenuData() {
-        // Main menu items
-        mainMenuItems = new ArrayList<>();
-        mainMenuItems.add("Eco Tracker");
-        mainMenuItems.add("Eco Gauge");
-        mainMenuItems.add("Questionnaire");
+    /**
+     * Show PopupMenu for Eco Tracker options (Tracker and Habit)
+     */
+    private void showEcoTrackerMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(this, anchor, Gravity.TOP, 0, R.style.CustomPopupMenu);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.eco_tracker_menu, popupMenu.getMenu());
 
-        // Sub-menu items
-        subMenuItems = new HashMap<>();
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
 
-        List<String> ecoTrackerSubMenu = new ArrayList<>();
-        ecoTrackerSubMenu.add("Log Activities");
-        ecoTrackerSubMenu.add("Habit Suggestions");
-        ecoTrackerSubMenu.add("Calendar and Activity Management");
+            if (id == R.id.menu_tracker) {
+                startActivity(new Intent(this, EcoTrackerActivity.class));
+                return true;
+            } else if (id == R.id.menu_habit) {
+                // startActivity(new Intent(this, ****.class)); replace **** later on for Abdul part
+                return true;
+            } else {
+                return false;
+            }
+        });
 
-        List<String> ecoGaugeSubMenu = new ArrayList<>();
-        ecoGaugeSubMenu.add("Eco Gauge Summary");
-        ecoGaugeSubMenu.add("Emissions Analytics");
+        popupMenu.show();
+    }
 
-        List<String> questionnaireSubMenu = new ArrayList<>();
-        questionnaireSubMenu.add("Redo Questionnaire");
-        questionnaireSubMenu.add("Questionnaire Score Summary");
-        questionnaireSubMenu.add("Questionnaire Compare Summary");
+    /**
+     * Show PopupMenu for Annual Footprint options (Redo Survey and View Report)
+     */
+    private void showAnnualFootprintMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(this, anchor, Gravity.TOP, 0, R.style.CustomPopupMenu);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.annual_footprint_menu, popupMenu.getMenu());
 
-        subMenuItems.put(mainMenuItems.get(0), ecoTrackerSubMenu); // Eco Tracker
-        subMenuItems.put(mainMenuItems.get(1),  ecoGaugeSubMenu);   // Eco Gauge
-        subMenuItems.put(mainMenuItems.get(2),  questionnaireSubMenu);   // Questionnaire
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.menu_redo_survey) {
+                // Navigate to the Annual Survey activity
+                //startActivity(new Intent(this, AnnualSurveyActivity.class));
+                return true;
+            } else if (id == R.id.menu_view_report) {
+                // Navigate to the Annual Report activity
+                //startActivity(new Intent(this, AnnualReportActivity.class));
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        popupMenu.show();
     }
 }

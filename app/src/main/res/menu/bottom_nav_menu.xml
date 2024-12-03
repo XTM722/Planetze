@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_eco_tracker"
+        android:icon="@drawable/carbon_footprint"
+        android:title="@string/eco_tracker" />
+    <item
+        android:id="@+id/nav_eco_gauge"
+        android:icon="@drawable/ic_carbon_offset"
+        android:title="@string/eco_gauge" />
+    <item
+        android:id="@+id/nav_annual_footprint"
+        android:icon="@drawable/ic_reports"
+        android:title="@string/annual_footprint" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
+</menu>

@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Planetze">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".IntroActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ScoreCompareActivity"
             android:exported="false" />
@@ -31,22 +34,28 @@
             android:exported="false" />
         <activity
             android:name=".QuestionsActivity"
-            android:exported="false" />
-        <!-- Main Login Activity -->
+            android:exported="false" /> <!-- Main Login Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".EcoTrackerActivity" android:exported="true" />
-        <activity android:name=".EcoGaugeActivity" android:exported="true" />
-        <activity android:name=".HabitSuggestionsActivity" android:exported="true" />
-        <activity android:name=".CalendarActivity" android:exported="true" />
-
+        <activity
+            android:name=".EcoTrackerActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EcoGaugeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HabitSuggestionsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
