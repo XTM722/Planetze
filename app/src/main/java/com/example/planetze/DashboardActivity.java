@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.planetze.models.User;
 
+import java.util.HashMap;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private User user; // User instance to track data
@@ -136,7 +138,17 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (id == R.id.menu_redo_survey) {
                 // Navigate to Questions Activity
-                startActivity(new Intent(this, QuestionsActivity.class));
+                if (user != null){
+                    user.answers = new HashMap<>();
+                    Intent intent = new Intent(this, QuestionsActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(this, "User data not found!", Toast.LENGTH_SHORT).show();
+
+                }
+                //startActivity(new Intent(this, QuestionsActivity.class));
                 return true;
             } else if (id == R.id.menu_view_report) {
                 // Navigate to Score Calculation Activity
