@@ -84,8 +84,8 @@ The design intentionally avoids real-time dynamic updates to ensure simplicity a
 This rather static approach assumes that presenting universally impactful habits like "Planting Trees" or "Recycling" encourages behavioral change without overwhelming users with too many options or requiring extensive customization.
 
 Links to GitHub and Jira
-GitHub: Planetze Repository
-Jira: Project Tasks & Issues
+GitHub: [Planetze Repository](https://github.com/XTM722/Planetze)
+Jira: [Project Tasks & Issues](https://kevinzz22.atlassian.net/issues/PG22-21?jql=issueKey%20in%20%28PG22-21%2CPG22-22%2CPG22-23%29)
 
 Existing Credentials to Sign In
 For testing purposes, you can use the following credentials to log into the app:
