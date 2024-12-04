@@ -26,7 +26,8 @@ public class DashboardActivity extends AppCompatActivity {
         // Check if user data is available
         user = (User) getIntent().getSerializableExtra("user");
         if ((user == null) || (user.answers == null) || (user.answers.isEmpty())) {
-            Toast.makeText(this, "Please complete the required questions first.", Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this, "Please complete the required questions firsts.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, QuestionsActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
