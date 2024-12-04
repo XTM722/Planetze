@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
-
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class Calendar extends AppCompatActivity {
 
@@ -262,3 +264,4 @@ public class Calendar extends AppCompatActivity {
         totalEmissionsText.setText("Total CO2 Emissions: " + totalEmissions + " kg");
     }
 }
+
