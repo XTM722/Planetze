@@ -13,6 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import android.widget.Toast;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+
+
 
 public class EcoTrackerActivity extends AppCompatActivity {
 
@@ -23,6 +51,26 @@ public class EcoTrackerActivity extends AppCompatActivity {
     private List<String> activityLog;
     private HashMap<String, Double> categoryEmissions;
     private double totalEmissions;
+    private void logActivityToFirebase(String activityName, double co2Emission) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get current user ID
+        String logId = databaseReference.push().getKey(); // Generate unique ID for the log
+
+        // Create a log object
+        HashMap<String, Object> activityLog = new HashMap<>();
+        activityLog.put("activityName", activityName);
+        activityLog.put("co2Emission", co2Emission);
+        activityLog.put("timestamp", System.currentTimeMillis());
+
+        // Save the log under the user's node in the database
+        databaseReference.child(userId).child("eco_tracker_logs").child(logId).setValue(activityLog)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "Activity logged successfully!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to log activity: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,11 +210,54 @@ public class EcoTrackerActivity extends AppCompatActivity {
     }
 
     private void logActivity(String type, double emissions, String[] inputs) {
-        activityLog.add(type + ": " + String.join(", ", inputs) + " - " + emissions + " kg CO2e");
+        // Format the log entry as "ActivityType - Emissions kg CO2e - yyyy-MM-dd"
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String logEntry = type + " - " + emissions + " kg CO2e - " + date;
+
+        // Add the log entry to the local activity log
+        activityLog.add(logEntry);
         totalEmissions += emissions;
         textViewTotalEmissions.setText(String.format("Total Daily CO2e Emissions: %.2f kg", totalEmissions));
         logAdapter.notifyDataSetChanged();
+
+        // Update the Firebase activity log
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Retrieve the current activity log from Firebase
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // Initialize a list to store existing log entries from Firebase
+                List<String> firebaseLog = new ArrayList<>();
+
+                // If a previous log exists, add it to the list
+                if (snapshot.exists() && snapshot.hasChild("activityLog")) {
+                    for (DataSnapshot logChild : snapshot.child("activityLog").getChildren()) {
+                        firebaseLog.add(logChild.getValue(String.class));
+                    }
+                }
+
+                // Add the new log entry to the list
+                firebaseLog.add(logEntry);
+
+                // Update the Firebase database with the new activity log
+                Map<String, Object> userAttributes = new HashMap<>();
+                userAttributes.put("activityLog", firebaseLog);
+                databaseReference.child(userId).updateChildren(userAttributes)
+                        .addOnSuccessListener(unused -> Toast.makeText(EcoTrackerActivity.this, "Activity logged successfully!", Toast.LENGTH_SHORT).show())
+                        .addOnFailureListener(e -> Toast.makeText(EcoTrackerActivity.this, "Failed to log activity: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(EcoTrackerActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
+
 
     private void updateLogActivity(int position, String type, double emissions, String[] inputs) {
         String oldLog = activityLog.get(position);
