@@ -3,6 +3,12 @@
         android:id="@+id/menu_emission_overview"
         android:title="@string/emissions_overview" />
     <item
+        android:id="@+id/menu_emission_category"
+        android:title="@string/emissions_category" />
+    <item
         android:id="@+id/menu_emission_trend"
         android:title="@string/emissions_trend" />
+    <item
+        android:id="@+id/menu_emission_comparison"
+        android:title="@string/emissions_comparison" />
 </menu>
