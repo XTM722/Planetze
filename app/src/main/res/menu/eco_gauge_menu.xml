@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_emission_overview"
+        android:title="@string/emissions_overview" />
+    <item
+        android:id="@+id/menu_emission_trend"
+        android:title="@string/emissions_trend" />
+</menu>

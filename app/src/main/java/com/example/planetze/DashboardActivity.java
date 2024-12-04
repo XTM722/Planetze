@@ -45,10 +45,12 @@ public class DashboardActivity extends AppCompatActivity {
                 View trackerView = findViewById(R.id.nav_eco_tracker); // Anchor for PopupMenu
                 showEcoTrackerMenu(trackerView);
                 return true;
-            } else if (id == R.id.nav_eco_gauge) {
-                startActivity(new Intent(this, EcoGaugeActivity.class));
+            }
+            else if( id == R.id.nav_eco_hub) {
+                // startActivity(new Intent(this, ***.class)); replace *** for EcoHUb Class Activity
                 return true;
-            } else if (id == R.id.nav_annual_footprint) {
+            }
+            else if (id == R.id.nav_annual_footprint) {
                 // Show PopupMenu for Annual Footprint options
                 View footprintView = findViewById(R.id.nav_annual_footprint); // Anchor for PopupMenu
                 showAnnualFootprintMenu(footprintView);
@@ -56,9 +58,15 @@ public class DashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
-            } else {
+            }
+                else if (id == R.id.nav_eco_gauge){
+                    View trackerView = findViewById(R.id.nav_eco_gauge); // Anchor for PopupMenu
+                    showEcoGaugeMenu(trackerView);
+                }
+                else {
                 return false;
             }
+            return false;
         });
     }
 
@@ -81,6 +89,30 @@ public class DashboardActivity extends AppCompatActivity {
                 // Navigate to Habit Suggestions Activity
                 Intent habitIntent = new Intent(this, HabitSuggestionsActivity.class);
                 startActivity(habitIntent);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        popupMenu.show();
+    }
+    private void showEcoGaugeMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(this, anchor, Gravity.TOP, 0, R.style.CustomPopupMenu);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.eco_gauge_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.menu_emission_overview) {
+                // Navigate to Eco Gauge Activity
+                // startActivity(new Intent(this, ****.class)); replace **** with actual class name
+                return true;
+            } else if (id == R.id.menu_emission_trend) {
+                // Navigate to Data Sources Activity
+                // Intent intent = new Intent(this, ****.class); replace **** with actual class name
+                // startActivity(intent);
                 return true;
             } else {
                 return false;
