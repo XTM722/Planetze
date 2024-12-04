@@ -85,4 +85,11 @@
         android:scrollbars="vertical"
         android:layout_marginTop="16dp" />
 
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+
 </LinearLayout>
