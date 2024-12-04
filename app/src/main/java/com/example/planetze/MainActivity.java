@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(isFirstTime) {
                 // Show the IntroActivity and set the first time user to false
                 Intent intent = new Intent(this, IntroActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
 
                 //set the first time user to false to avoid this message next time the app is opened

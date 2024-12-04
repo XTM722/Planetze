@@ -8,30 +8,30 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-import com.example.planetze.models.User;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.planetze.models.User;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private User user; // user
+    private User user; // User instance to track data
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-
-        // check user data
+        // Check if user data is available
         user = (User) getIntent().getSerializableExtra("user");
         if ((user == null) || (user.answers == null) || (user.answers.isEmpty())) {
-            Toast.makeText(this, "Please comple the required questions firsts.", Toast.LENGTH_LONG).show();
 
+            Toast.makeText(this, "Please complete the required questions firsts.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, QuestionsActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
         }
-        // Show a toast message when the user clicks on the bottom navigation item
 
         // Initialize BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -41,29 +41,37 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_eco_tracker) {
-                // Show PopupMenu for Tracker and Habit
+                // Show PopupMenu for Tracker and Habits
                 View trackerView = findViewById(R.id.nav_eco_tracker); // Anchor for PopupMenu
                 showEcoTrackerMenu(trackerView);
                 return true;
-            } else if (id == R.id.nav_eco_gauge) {
-                startActivity(new Intent(this, EcoGaugeActivity.class));
+            }
+            else if( id == R.id.nav_eco_hub) {
+                // startActivity(new Intent(this, ***.class)); replace *** for EcoHUb Class Activity
                 return true;
-            } else if (id == R.id.nav_annual_footprint) {
-                // Show PopupMenu for Annual Footprint
+            }
+            else if (id == R.id.nav_annual_footprint) {
+                // Show PopupMenu for Annual Footprint options
                 View footprintView = findViewById(R.id.nav_annual_footprint); // Anchor for PopupMenu
                 showAnnualFootprintMenu(footprintView);
                 return true;
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
-            } else {
+            }
+                else if (id == R.id.nav_eco_gauge){
+                    View trackerView = findViewById(R.id.nav_eco_gauge); // Anchor for PopupMenu
+                    showEcoGaugeMenu(trackerView);
+                }
+                else {
                 return false;
             }
+            return false;
         });
     }
 
     /**
-     * Show PopupMenu for Eco Tracker options (Tracker and Habit)
+     * Show PopupMenu for Eco Tracker options (Tracker and Habits)
      */
     private void showEcoTrackerMenu(View anchor) {
         PopupMenu popupMenu = new PopupMenu(this, anchor, Gravity.TOP, 0, R.style.CustomPopupMenu);
@@ -74,10 +82,37 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.menu_tracker) {
+                // Navigate to Eco Tracker Activity
                 startActivity(new Intent(this, EcoTrackerActivity.class));
                 return true;
             } else if (id == R.id.menu_habit) {
-                // startActivity(new Intent(this, ****.class)); replace **** later on for Abdul part
+                // Navigate to Habit Suggestions Activity
+                Intent habitIntent = new Intent(this, HabitSuggestionsActivity.class);
+                startActivity(habitIntent);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        popupMenu.show();
+    }
+    private void showEcoGaugeMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(this, anchor, Gravity.TOP, 0, R.style.CustomPopupMenu);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.eco_gauge_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.menu_emission_overview) {
+                // Navigate to Eco Gauge Activity
+                // startActivity(new Intent(this, ****.class)); replace **** with actual class name
+                return true;
+            } else if (id == R.id.menu_emission_trend) {
+                // Navigate to Data Sources Activity
+                // Intent intent = new Intent(this, ****.class); replace **** with actual class name
+                // startActivity(intent);
                 return true;
             } else {
                 return false;
@@ -99,28 +134,22 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.menu_redo_survey) {
-                // Navigate to the Annual Survey activity
-                Intent intent = new Intent(DashboardActivity.this, QuestionsActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
-                finish();
+                // Navigate to Questions Activity
+                startActivity(new Intent(this, QuestionsActivity.class));
                 return true;
             } else if (id == R.id.menu_view_report) {
-                // Navigate to the Annual Report activity
+                // Navigate to Score Calculation Activity
                 Intent intent = new Intent(this, CalculateScoresActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
-                finish();
                 return true;
-            }
-            else if (id == R.id.menu_global_compare){
-                // Navigate to the Global Compare activity
+            } else if (id == R.id.menu_global_compare) {
+                // Navigate to Global Comparison Activity
                 Intent intent = new Intent(this, ScoreCompareActivity.class);
                 intent.putExtra("user", user);
-                finish();
                 startActivity(intent);
                 return true;
-            }else {
+            } else {
                 return false;
             }
         });

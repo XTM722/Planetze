@@ -6,5 +6,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Calendar">
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <TextView
+        android:id="@+id/DateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="select_date"
+        android:paddingTop="8dp" />
+
+
+
+
+    <Spinner
+        android:id="@+id/activityS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+
+
+
+    <Button
+        android:id="@+id/ActivityButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="select_activity" />
+
+
+
+
+    <LinearLayout
+        android:id="@+id/Container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingTop="8dp">
+
+
+
+
+        <Spinner
+            android:id="@+id/secondaryS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+
+        <EditText
+            android:id="@+id/numInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="enter_value"
+            android:inputType="numberDecimal" />
+
+
+
+
+        <Button
+            android:id="@+id/logButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="log_activity" />
+    </LinearLayout>
+
+
+
+
+    <ListView
+        android:id="@+id/activitView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+
+
+    <TextView
+        android:id="@+id/EmissionsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="total_emissions"
+        android:paddingTop="8dp" />
+</LinearLayout>

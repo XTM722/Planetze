@@ -8,6 +8,11 @@
         android:icon="@drawable/ic_carbon_offset"
         android:title="@string/eco_gauge" />
     <item
+        android:id="@+id/nav_eco_hub"
+        android:icon="@drawable/ic_learn"
+        android:title="@string/eco_hub"/>
+
+    <item
         android:id="@+id/nav_annual_footprint"
         android:icon="@drawable/ic_reports"
         android:title="@string/annual_footprint" />
