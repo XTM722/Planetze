@@ -47,7 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
                 return true;
             }
             else if( id == R.id.nav_eco_hub) {
-                // startActivity(new Intent(this, ***.class)); replace *** for EcoHUb Class Activity
+                startActivity(new Intent(this, EcoHubActivity.class));
                 return true;
             }
             else if (id == R.id.nav_annual_footprint) {
@@ -107,13 +107,14 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (id == R.id.menu_emission_overview) {
                 // Navigate to Eco Gauge Activity
-                // startActivity(new Intent(this, ****.class)); replace **** with actual class name
+                startActivity(new Intent(this, EmissionsAnalyticsActivity.class));
                 return true;
             } else if (id == R.id.menu_emission_trend) {
                 // Navigate to Data Sources Activity
                 // Intent intent = new Intent(this, ****.class); replace **** with actual class name
                 // startActivity(intent);
-                return true;
+                Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                return false;
             } else {
                 return false;
             }
