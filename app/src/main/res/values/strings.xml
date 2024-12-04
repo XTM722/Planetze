@@ -68,6 +68,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="logout">Logout</string>
     <string name="global_comparison">Global Comparison</string>
+    <string name="eco_hub">Eco Hub</string>
+    <string name="emissions_overview">Emissions Overview</string>
+    <string name="emissions_trend">Emissions Trend</string>
 
 
 </resources>
