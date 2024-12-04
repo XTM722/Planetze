@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.planetze.models.User;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class EmissionsAnalyticsActivity extends AppCompatActivity implements Pre
     private List<String> userActivityLog = new ArrayList<>(); // 新增成员变量
 
     private Presenter.EmissionsPresenter presenter;
+    private Model model;
+    private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +38,14 @@ public class EmissionsAnalyticsActivity extends AppCompatActivity implements Pre
 
         categoryBreakdownRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> activityLog = getIntent().getStringArrayListExtra("activityLog");
-        if (activityLog != null) {
-            userActivityLog.addAll(activityLog);
-        }
-
-        presenter = new Presenter.EmissionsPresenter(this, userActivityLog);
-
-        setupTimePeriodTabs();
-
-        presenter.filterEmissionsByTimePeriod(0);
+        model = Model.getInstance();
+        String userId = model.getCurrentUserId();
+        model.getUser(userId, (User user) -> {
+            presenter = new Presenter.EmissionsPresenter(this, user.activityLog);
+            setupTimePeriodTabs();
+            presenter.filterEmissionsByTimePeriod(0);
+        });
     }
-
 
     private void setupTimePeriodTabs() {
         timePeriodTabLayout.addTab(timePeriodTabLayout.newTab().setText("Weekly"));

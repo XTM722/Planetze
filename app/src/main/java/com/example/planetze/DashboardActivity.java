@@ -61,11 +61,11 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
             }
-                else if (id == R.id.nav_eco_gauge){
-                    View trackerView = findViewById(R.id.nav_eco_gauge); // Anchor for PopupMenu
-                    showEcoGaugeMenu(trackerView);
-                }
-                else {
+            else if (id == R.id.nav_eco_gauge){
+                View trackerView = findViewById(R.id.nav_eco_gauge); // Anchor for PopupMenu
+                showEcoGaugeMenu(trackerView);
+            }
+            else {
                 return false;
             }
             return false;
@@ -117,6 +117,19 @@ public class DashboardActivity extends AppCompatActivity {
                 // startActivity(intent);
                 Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show();
                 return false;
+            }  else if (id == R.id.menu_emission_category) {
+                // Navigate to Data Sources Activity
+                // Intent intent = new Intent(this, ****.class); replace **** with actual class name
+                // startActivity(intent);
+                Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                return false;
+            }  else if (id == R.id.menu_emission_comparison) {
+                // Navigate to Data Sources Activity
+                Intent intent = new Intent(this, ScoreCompareActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("calculation", "emissions");
+                startActivity(intent);
+                return true;
             } else {
                 return false;
             }
@@ -160,6 +173,7 @@ public class DashboardActivity extends AppCompatActivity {
                 // Navigate to Global Comparison Activity
                 Intent intent = new Intent(this, ScoreCompareActivity.class);
                 intent.putExtra("user", user);
+                intent.putExtra("calculation", "score");
                 startActivity(intent);
                 return true;
             } else {
@@ -170,3 +184,4 @@ public class DashboardActivity extends AppCompatActivity {
         popupMenu.show();
     }
 }
+

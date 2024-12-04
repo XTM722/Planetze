@@ -1,5 +1,6 @@
 package com.example.planetze;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.example.planetze.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -49,8 +52,14 @@ public class EcoTrackerActivity extends AppCompatActivity {
     private LogRecyclerAdapter logAdapter;
 
     private List<String> activityLog;
+    private HashMap<String, String[]> logInputs;
+
     private HashMap<String, Double> categoryEmissions;
     private double totalEmissions;
+
+    private User user;
+    private Model model;
+
     private void logActivityToFirebase(String activityName, double co2Emission) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get current user ID
@@ -77,6 +86,13 @@ public class EcoTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eco_tracker);
 
+        model = Model.getInstance();
+        String userId = model.getCurrentUserId();
+        model.getUser(userId, (User user) -> {
+            this.user = user;
+        });
+
+
         // Initialize views
         textViewTotalEmissions = findViewById(R.id.textview_total_emissions);
         recyclerViewLoggedData = findViewById(R.id.recyclerview_logged_data);
@@ -85,6 +101,7 @@ public class EcoTrackerActivity extends AppCompatActivity {
 
         // Initialize data
         activityLog = new ArrayList<>();
+        logInputs = new HashMap<>();
         categoryEmissions = new HashMap<>();
         totalEmissions = 0.0;
 
@@ -112,6 +129,7 @@ public class EcoTrackerActivity extends AppCompatActivity {
         Button buttonElectronics = findViewById(R.id.button_electronics);
         Button buttonOtherPurchases = findViewById(R.id.button_other_purchases);
         Button buttonEnergyBills = findViewById(R.id.button_energy_bills);
+        Button buttonSubmit = findViewById(R.id.button_submit);
 
         // Set button click listeners
         buttonDriveVehicle.setOnClickListener(v -> showOwnershipDialog());
@@ -123,6 +141,7 @@ public class EcoTrackerActivity extends AppCompatActivity {
         buttonElectronics.setOnClickListener(v -> showElectronicsDialog(null, -1));
         buttonOtherPurchases.setOnClickListener(v -> showOtherPurchasesDialog(null, -1));
         buttonEnergyBills.setOnClickListener(v -> showEnergyBillsDialog(null, -1));
+        buttonSubmit.setOnClickListener(v -> submit());
     }
 
 
@@ -210,53 +229,38 @@ public class EcoTrackerActivity extends AppCompatActivity {
     }
 
     private void logActivity(String type, double emissions, String[] inputs) {
+        if (user == null) return;
         // Format the log entry as "ActivityType - Emissions kg CO2e - yyyy-MM-dd"
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String logEntry = type + " - " + emissions + " kg CO2e - " + date;
+        String log = type + " - " + emissions + " kg CO2e - " + date;
 
         // Add the log entry to the local activity log
-        activityLog.add(logEntry);
+        activityLog.add(log);
+
+        user.activityLog.add(log);
+
+        String key = type + " " + date;
+        logInputs.put(key, inputs);
+
         totalEmissions += emissions;
         textViewTotalEmissions.setText(String.format("Total Daily CO2e Emissions: %.2f kg", totalEmissions));
         logAdapter.notifyDataSetChanged();
 
-        // Update the Firebase activity log
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        // Retrieve the current activity log from Firebase
-        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                // Initialize a list to store existing log entries from Firebase
-                List<String> firebaseLog = new ArrayList<>();
-
-                // If a previous log exists, add it to the list
-                if (snapshot.exists() && snapshot.hasChild("activityLog")) {
-                    for (DataSnapshot logChild : snapshot.child("activityLog").getChildren()) {
-                        firebaseLog.add(logChild.getValue(String.class));
-                    }
-                }
-
-                // Add the new log entry to the list
-                firebaseLog.add(logEntry);
-
-                // Update the Firebase database with the new activity log
-                Map<String, Object> userAttributes = new HashMap<>();
-                userAttributes.put("activityLog", firebaseLog);
-                databaseReference.child(userId).updateChildren(userAttributes)
-                        .addOnSuccessListener(unused -> Toast.makeText(EcoTrackerActivity.this, "Activity logged successfully!", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(EcoTrackerActivity.this, "Failed to log activity: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(EcoTrackerActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
+    private void submit() {
+        model.postUser(user, (Boolean success) -> {
+            Toast.makeText(
+                    EcoTrackerActivity.this,
+                    (success) ? "Activity logged successfully!" : "Failed to log activity",
+                    Toast.LENGTH_SHORT).show();
+
+            Intent intent =  new Intent(this,DashboardActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        });
+    }
 
 
     private void updateLogActivity(int position, String type, double emissions, String[] inputs) {
@@ -268,6 +272,9 @@ public class EcoTrackerActivity extends AppCompatActivity {
         String newLog = type + ": " + String.join(", ", inputs) + " - " + emissions + " kg CO2e";
         activityLog.set(position, newLog);
         totalEmissions += emissions;
+
+        user.activityLog.remove(oldLog);
+        user.activityLog.add(newLog);
 
         textViewTotalEmissions.setText(String.format("Total Daily CO2e Emissions: %.2f kg", totalEmissions));
         logAdapter.notifyDataSetChanged();
@@ -518,17 +525,22 @@ public class EcoTrackerActivity extends AppCompatActivity {
         String[] logParts = log.split(" - ");
         double emissions = Double.parseDouble(logParts[1].split(" ")[0]);
         totalEmissions -= emissions;
-        activityLog.remove(position);
+
         textViewTotalEmissions.setText(String.format("Total Daily CO2e Emissions: %.2f kg", totalEmissions));
         logAdapter.notifyDataSetChanged();
+
+        user.activityLog.remove(log);
+        activityLog.remove(position);
     }
 
     private void editLogActivity(int position, String log) {
-        String[] logParts = log.split(": ");
-        String type = logParts[0];
-        String[] inputs = logParts[1].split(" - ")[0].split(", ");
 
-        switch (type) {
+        String[] parts = log.split(" - ");
+        String key = parts[0] + " " + parts[2];
+
+        String[] inputs = logInputs.get(key);;
+
+        switch (parts[0] ) {
             case "Drive Personal Vehicle":
                 showDriveVehicleDialog(inputs, position);
                 break;

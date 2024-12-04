@@ -19,6 +19,8 @@ import com.example.planetze.R;
 import com.example.planetze.models.CountryAverageScore;
 import com.example.planetze.models.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ScoreCompareActivity extends AppCompatActivity {
@@ -49,10 +51,28 @@ public class ScoreCompareActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_score_compare);
 
-        user = (User) getIntent().getSerializableExtra("user");
-        answers = user.answers;
+        // print the country score in the box
+        TextView ComputeTextView = findViewById(R.id.userscore);
 
-        model = Model.getInstance();
+
+        user = (User) getIntent().getSerializableExtra("user");
+        String calculation = getIntent().getStringExtra("calculation");
+
+        if (calculation.equals("score")) {
+            ComputeTextView.setText("Your score: " + user.score);
+        } else {
+            model = Model.getInstance();
+            List<Model.ParsedLogEntry> parsedLog = new ArrayList<>();
+            for (String logEntryStr : user.activityLog) {
+                Model.ParsedLogEntry entry = model.parseLogEntry(logEntryStr);
+                if (entry != null) {
+                    parsedLog.add(entry);
+                }
+            }
+
+            double emissions = model.calculateTotalEmissions(parsedLog) * 0.001;
+            ComputeTextView.setText("Your Emissions score: " + emissions);
+        }
 
         countryscore = new CountryAverageScore();
 
@@ -63,7 +83,6 @@ public class ScoreCompareActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         countryDropDown.setAdapter(adapter);
-
         countryDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,10 +99,7 @@ public class ScoreCompareActivity extends AppCompatActivity {
         // print the country score in the box
         scoreTextView.setText(" " + countryscore.countryavg);
 
-        // print the country score in the box
-        TextView ComputeTextView = findViewById(R.id.userscore);
 
-        ComputeTextView.setText("Your score: " + user.score);
 
         Button b = findViewById(R.id.buttontodashboard);
 

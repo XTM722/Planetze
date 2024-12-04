@@ -45,6 +45,10 @@ public class Model {
         return instance;
     }
 
+    public String getCurrentUserId() {
+        return auth.getCurrentUser().getUid();
+    }
+
     public void authenticate(String email, String password, Consumer<User> callback) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

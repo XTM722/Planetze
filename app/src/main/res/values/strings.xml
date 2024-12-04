@@ -71,6 +71,8 @@
     <string name="eco_hub">Eco Hub</string>
     <string name="emissions_overview">Emissions Overview</string>
     <string name="emissions_trend">Emissions Trend</string>
+    <string name="emissions_category">Emissions Category</string>
+    <string name="emissions_comparison">Emissions Comparison</string>
 
 
 </resources>
