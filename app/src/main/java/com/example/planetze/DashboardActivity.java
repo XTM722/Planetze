@@ -108,15 +108,15 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.menu_emission_overview) {
-                // Navigate to Eco Gauge Activity
+                // Navigate to Eco Gauge  - Emission OverView Activity
                 startActivity(new Intent(this, EmissionsAnalyticsActivity.class));
                 return true;
             } else if (id == R.id.menu_emission_trend) {
-                // Navigate to Data Sources Activity
-                // Intent intent = new Intent(this, ****.class); replace **** with actual class name
-                // startActivity(intent);
-                Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show();
-                return false;
+                // Navigate to Eco Gauge - Trend Activity
+                Intent intent = new Intent(this, EcoTrendActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                return true;
             }  else if (id == R.id.menu_emission_category) {
                 // Navigate to Data Sources Activity
                 // Intent intent = new Intent(this, ****.class); replace **** with actual class name
