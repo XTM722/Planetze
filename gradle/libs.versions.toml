@@ -13,6 +13,7 @@ firebaseDatabase = "21.0.0"
 firebaseInappmessaging = "21.0.1"
 firebaseFirestore = "25.1.1"
 mockito = "4.11.0"
+mpandroidchart = "v3.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -27,6 +28,7 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging", version.ref = "firebaseInappmessaging" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 
 
 [plugins]
