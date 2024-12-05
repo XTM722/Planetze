@@ -1,8 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_tracker"
-        android:title="Log Activities" />
-    <item
-        android:id="@+id/menu_habit"
-        android:title="Habit Suggestions" />
-</menu>

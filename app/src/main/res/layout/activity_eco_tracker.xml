@@ -1,101 +1,434 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/background_color"
+    tools:ignore="ScrollViewCount">
 
-    <TextView
-        android:id="@+id/textview_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Eco Tracker"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_gravity="center"
-        android:paddingBottom="16dp" />
-
-    <Button
-        android:id="@+id/button_drive_vehicle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Drive Personal Vehicle" />
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eco Tracker"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:paddingBottom="8dp"
+            android:textColor="@color/dark_blue" />
 
-    <Button
-        android:id="@+id/button_public_transport"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Take Public Transportation" />
+        <!-- Date and Change Date -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp">
 
-    <Button
-        android:id="@+id/button_cycling_walking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cycling or Walking" />
+            <TextView
+                android:id="@+id/textview_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: YYYY-MM-DD"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:textColor="@color/almost_black" />
 
-    <Button
-        android:id="@+id/button_flight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Flight (Short-Haul or Long-Haul)" />
+            <Button
+                android:id="@+id/button_change_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Date"
+                android:backgroundTint="@color/teal"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/button_meal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Meal" />
+        <!-- Activities List -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_new_clothes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buy New Clothes" />
+            <!-- Drive Personal Vehicle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
 
-    <Button
-        android:id="@+id/button_electronics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buy Electronics" />
+                <ImageView
+                    android:id="@+id/icon_drive_vehicle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_vehicle" />
 
-    <Button
-        android:id="@+id/button_other_purchases"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Other Purchases" />
+                <TextView
+                    android:id="@+id/text_drive_vehicle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Drive Personal Vehicle"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
 
-    <Button
-        android:id="@+id/button_energy_bills"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Energy Bills" />
+                <Button
+                    android:id="@+id/button_drive_vehicle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-    <TextView
+            <!-- Take Public Transportation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_public_transport"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_bus" />
+
+                <TextView
+                    android:id="@+id/text_public_transport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Take Public Transportation"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_public_transport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <!-- Cycling or Walking -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_cycling_walking"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_bike" />
+
+                <TextView
+                    android:id="@+id/text_cycling_walking"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Cycling or Walking"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_cycling_walking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <!-- Short-Haul or Long-Haul Flight -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_flight"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_plane" />
+
+                <TextView
+                    android:id="@+id/text_flight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Flight (Short-Haul or Long-Haul)"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_flight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_meal"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_food" />
+
+                <TextView
+                    android:id="@+id/text_meal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Meal"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_new_clothes"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_clothes" />
+
+                <TextView
+                    android:id="@+id/text_clothes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Buy New Clothes"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_new_clothes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_electronics"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_electronics" />
+
+                <TextView
+                    android:id="@+id/text_electronics"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Buy Electronics"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_electronics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_other_purchase"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_bike" />
+
+                <TextView
+                    android:id="@+id/text_other_purchase"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Other Purchase"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_other_purchases"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:id="@+id/icon_bills"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_energy" />
+
+                <TextView
+                    android:id="@+id/text_bills"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Energy Bill"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dark_blue" />
+
+                <Button
+                    android:id="@+id/button_energy_bills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log"
+                    android:backgroundTint="@color/teal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/text_logged_activities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logged Activities"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:textColor="@color/dark_blue" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_logged_data"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="vertical"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:elevation="4dp" />
+     <!-- Total Emissions Text -->
+        <TextView
         android:id="@+id/textview_total_emissions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Total Daily CO2e Emissions: 0.00 kg"
+        android:textSize="16sp"
         android:layout_gravity="center"
-        android:text="Total Daily CO2e Emissions: 0.00 kg" />
-
-    <!-- Only RecyclerView to handle scrolling -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_logged_data"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:layout_marginTop="16dp" />
-    <Button
-        android:id="@+id/button_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:textColor="@color/dark_blue" />
 
 
-    <Button
-        android:id="@+id/button_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit" />
+        <!-- Activities Saved Message -->
+        <TextView
+            android:id="@+id/textview_activities_saved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activities are saved automatically."
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/light_blue" />
 
-
-</LinearLayout>
+        <!-- Go Back Button -->
+        <Button
+            android:id="@+id/button_go_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Back"
+            android:backgroundTint="@color/teal"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp" />
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textSize="18sp"
+            android:backgroundTint="@color/teal"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>
