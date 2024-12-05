@@ -46,4 +46,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     testImplementation(libs.mockito.core)
     implementation(libs.mpandroidchart)
+    implementation(libs.circleimageview)
+
 }

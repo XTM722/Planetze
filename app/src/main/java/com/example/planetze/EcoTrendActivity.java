@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.example.planetze.Model;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,43 +136,51 @@ public class EcoTrendActivity extends AppCompatActivity {
 
     }
     private void populateGraph(FrameLayout container, String label, List<Model.ParsedLogEntry> logs) {
+        ProgressBar loadingIndicator = findViewById(R.id.loadingIndicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
+
+        // Simulate graph population
+        runOnUiThread(() -> {
+            loadingIndicator.setVisibility(View.GONE);
+
         LineChart chart = new LineChart(this);
         container.removeAllViews();
         container.addView(chart);
 
-        List <Entry> entries = new ArrayList<>();
+        List<Entry> entries = new ArrayList<>();
 
         if (!logs.isEmpty()) {
-           // add a line from (0,0) to the first log value
-           entries.add(new Entry(0, 0f));
-           entries.add(new Entry(1, (float) logs.get(0).emissions));
-
-        }
-
-        for (int i = 1; i < logs.size(); i++) {
-            Model.ParsedLogEntry log = logs.get(i);
-            entries.add(new Entry(i + 1, (float) log.emissions));
-            Log.d("EcoTrendActivity", "Adding emissions: " + log.emissions);
-
+            // Add a line from (0, 0) to the first log value
+            entries.add(new Entry(0, 0f));
+            for (int i = 0; i < logs.size(); i++) {
+                Model.ParsedLogEntry log = logs.get(i);
+                entries.add(new Entry(i + 1, (float) log.emissions));
+                Log.d("EcoTrendActivity", "Adding emissions: " + log.emissions);
+            }
         }
 
         LineDataSet dataSet = new LineDataSet(entries, label);
         dataSet.setColor(getResources().getColor(R.color.teal, null));
+        dataSet.setCircleColor(getResources().getColor(R.color.dark_blue, null));
         dataSet.setValueTextColor(getResources().getColor(R.color.black, null));
         dataSet.setLineWidth(2f);
         dataSet.setCircleRadius(4f);
+        dataSet.setDrawValues(true);
 
         LineData data = new LineData(dataSet);
         chart.setData(data);
 
+        // Customize chart appearance
+        chart.getDescription().setEnabled(false); // Disable description
+        chart.getXAxis().setGranularity(1f); // Interval for X-axis values
+        chart.getAxisLeft().setAxisMinimum(0f); // Start Y-axis from 0
+        chart.getAxisRight().setEnabled(false); // Disable the right Y-axis
+        chart.getLegend().setEnabled(true); // Enable legend for the dataset
 
-        // customize chart appearance
-        chart.getDescription().setEnabled(false);
-        chart.getAxisLeft().setAxisMinimum(0f); // start from 0
-        chart.getAxisRight().setAxisMinimum(100f); // Maximum emissions 100 to show
-        chart.getXAxis().setGranularity(1f); // interval of x-axis values
-        chart.invalidate();
+        chart.invalidate(); // Refresh chart
+    });
     }
+
 
 
     private void showEcoTrackerMenu(View anchor) {
