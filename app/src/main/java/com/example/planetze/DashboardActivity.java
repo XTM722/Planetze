@@ -262,7 +262,15 @@ public class DashboardActivity extends AppCompatActivity {
                 intent.putExtra("user", user);
                 startActivity(intent);
                 return true;
-            } else {
+            }
+            else if (id == R.id.menu_global_compare) {
+                Intent intent = new Intent(this, ScoreCompareActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("calculation", "Calculate Scores");
+                startActivity(intent);
+                return true;
+            }
+                else {
                 return false;
             }
         });
