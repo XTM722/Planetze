@@ -1685,7 +1685,7 @@ public class ScoreCalculate {
             score = Device_Frequency_Buyer(answers.get("q20"),0.12,0.24,0.36);
         }
 
-        user.score = score;
+        user.score = Math.max(0.0,score);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         DatabaseReference userRef = mDatabase.child("Users").child(user.userID);
