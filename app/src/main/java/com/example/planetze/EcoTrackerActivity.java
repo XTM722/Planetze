@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.example.planetze.models.User;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -85,7 +86,10 @@ public class EcoTrackerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eco_tracker);
-
+        Button buttonChangeDate = findViewById(R.id.button_change_date);
+        buttonChangeDate.setOnClickListener(v -> showDatePicker());
+        setCurrentDate();
+        fetchRecyclerDataForDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
         model = Model.getInstance();
         String userId = model.getCurrentUserId();
         model.getUser(userId, (User user) -> {
@@ -109,15 +113,16 @@ public class EcoTrackerActivity extends AppCompatActivity {
         logAdapter = new LogRecyclerAdapter(this, activityLog, new LogRecyclerAdapter.LogActionCallback() {
             @Override
             public void onDeleteLog(int position) {
-                removeLogActivity(position);
+                deleteLog(position); // Calls delete logic
             }
 
             @Override
             public void onEditLog(int position, String log) {
-                editLogActivity(position, log);
+                editLog(position, log); // Calls edit logic
             }
         });
         recyclerViewLoggedData.setAdapter(logAdapter);
+
 
         // Initialize buttons
         Button buttonDriveVehicle = findViewById(R.id.button_drive_vehicle);
@@ -142,6 +147,8 @@ public class EcoTrackerActivity extends AppCompatActivity {
         buttonOtherPurchases.setOnClickListener(v -> showOtherPurchasesDialog(null, -1));
         buttonEnergyBills.setOnClickListener(v -> showEnergyBillsDialog(null, -1));
         buttonSubmit.setOnClickListener(v -> submit());
+        Button buttonGoBack = findViewById(R.id.button_go_back);
+        buttonGoBack.setOnClickListener(v -> goToDashboard());
     }
 
 
@@ -250,17 +257,48 @@ public class EcoTrackerActivity extends AppCompatActivity {
 
 
     private void submit() {
+        // Get the selected date from the TextView
+        TextView textViewDate = findViewById(R.id.textview_date);
+        String selectedDate = textViewDate.getText().toString().replace("Date: ", "").trim();
+
+        // Check if there are any logs for the selected date
+        boolean hasLogsForDate = false;
+        for (String log : activityLog) {
+            if (log.contains(selectedDate)) {
+                hasLogsForDate = true;
+                break;
+            }
+        }
+
+        // If no logs exist for the selected date, add a zero-emission log
+        if (!hasLogsForDate) {
+            String zeroEmissionLog = "No Activity Logged - 0.0 kg CO2e - " + selectedDate;
+
+            // Add the zero-emission log to the activity log and user log
+            activityLog.add(zeroEmissionLog);
+            user.activityLog.add(zeroEmissionLog);
+
+            // Refresh the RecyclerView
+            logAdapter.notifyDataSetChanged();
+
+            // Ensure the total emissions for the day are displayed as 0
+            textViewTotalEmissions.setText("Total Daily CO2e Emissions: 0.00 kg");
+        }
+
+        // Save the updated user data to the database
         model.postUser(user, (Boolean success) -> {
             Toast.makeText(
                     EcoTrackerActivity.this,
                     (success) ? "Activity logged successfully!" : "Failed to log activity",
                     Toast.LENGTH_SHORT).show();
 
-            Intent intent =  new Intent(this,DashboardActivity.class);
+            // Redirect to the DashboardActivity
+            Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
         });
     }
+
 
 
     private void updateLogActivity(int position, String type, double emissions, String[] inputs) {
@@ -569,4 +607,178 @@ public class EcoTrackerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Unable to edit this activity.", Toast.LENGTH_SHORT).show();
         }
     }
+    private void setCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        TextView textViewDate = findViewById(R.id.textview_date);
+        textViewDate.setText("Date: " + currentDate);
+    }
+    private void showDatePicker() {
+        // Create a MaterialDatePicker.Builder instance
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Select a Date");
+
+        // Create the MaterialDatePicker
+        MaterialDatePicker<Long> materialDatePicker = builder.build();
+
+        // Show the picker
+        materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+
+        // Set the callback for when a date is selected
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+            // Convert the selected timestamp into a formatted date string
+            String selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    .format(new Date(selection));
+
+            // Update the TextView with the selected date
+            TextView textViewDate = findViewById(R.id.textview_date);
+            textViewDate.setText("Date: " + selectedDate);
+
+            // Fetch activities for the selected date
+            fetchRecyclerDataForDate(selectedDate);
+        });
+    }
+
+    private void fetchRecyclerDataForDate(String selectedDate) {
+        Model model = Model.getInstance();
+        String userId = model.getCurrentUserId();
+
+        model.getActivityLog(userId, activityLogList -> {
+            activityLog.clear(); // Clear the current log list
+            List<Model.ParsedLogEntry> parsedLogEntries = new ArrayList<>();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            boolean isDataFound = false;
+
+            for (String logEntry : activityLogList) {
+                // Parse the log entry and filter by the selected date
+                Model.ParsedLogEntry parsedEntry = model.parseLogEntry(logEntry);
+                if (parsedEntry != null) {
+                    String formattedParsedDate = dateFormat.format(parsedEntry.date);
+                    if (formattedParsedDate.equals(selectedDate.replace("Date: ", ""))) {
+                        parsedLogEntries.add(parsedEntry);
+                        activityLog.add(logEntry); // Add raw log entry for display in RecyclerView
+                        isDataFound = true;
+                    }
+                }
+            }
+
+            // Calculate total emissions using the parsed logs
+            double totalEmissionsForDate = model.calculateTotalEmissions(parsedLogEntries);
+
+            // Update the Total Emissions TextView
+            textViewTotalEmissions.setText(String.format(Locale.getDefault(), "Total Daily CO2e Emissions: %.2f kg", totalEmissionsForDate));
+
+            // Handle case when no data is found
+            if (!isDataFound) {
+                textViewTotalEmissions.setText("Total Daily CO2e Emissions: 0.00 kg");
+            }
+
+            // Notify adapter about updated log list
+            logAdapter.notifyDataSetChanged();
+        });
+    }
+
+
+    private void editLog(int position, String log) {
+        // Split the log into its components
+        String[] logParts = log.split(" - ");
+        if (logParts.length < 3) return;
+
+        String activityType = logParts[0];
+        String date = logParts[2];
+
+        // Retrieve original inputs from logInputs using the key
+        String key = activityType + " " + date;
+        String[] originalInputs = logInputs.get(key);
+
+        if (originalInputs == null) {
+            Toast.makeText(this, "Original input data not found. Cannot edit.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show the appropriate dialog based on the activity type
+        switch (activityType) {
+            case "Drive Personal Vehicle":
+                showDriveVehicleDialog(originalInputs, position);
+                break;
+            case "Take Public Transportation":
+                showPublicTransportDialog(originalInputs, position);
+                break;
+            case "Cycling or Walking":
+                showCyclingWalkingDialog(originalInputs, position);
+                break;
+            case "Flight":
+                showFlightDialog(originalInputs, position);
+                break;
+            case "Meal":
+                showMealDialog(originalInputs, position);
+                break;
+            case "Buy New Clothes":
+                showNewClothesDialog(originalInputs, position);
+                break;
+            case "Buy Electronics":
+                showElectronicsDialog(originalInputs, position);
+                break;
+            case "Energy Bills":
+                showEnergyBillsDialog(originalInputs, position);
+                break;
+            default:
+                Toast.makeText(this, "Editing not supported for this activity.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+
+
+
+    private void deleteLog(int position) {
+        String logToDelete = activityLog.get(position);
+
+        String[] logParts = logToDelete.split(" - ");
+        if (logParts.length < 2) return;
+
+        double emissionsToRemove = Double.parseDouble(logParts[1].split(" ")[0]); // Extract emissions
+
+        // Recalculate total emissions
+        totalEmissions -= emissionsToRemove;
+        textViewTotalEmissions.setText(String.format(Locale.getDefault(), "Total Daily CO2e Emissions: %.1f kg", totalEmissions));
+
+        Model model = Model.getInstance();
+        String userId = model.getCurrentUserId();
+
+        model.getUser(userId, user -> {
+            if (user != null) {
+                user.activityLog.remove(logToDelete); // Remove log from user object
+                model.postUser(user, success -> {
+                    if (success) {
+                        activityLog.remove(position); // Remove from local list
+                        logAdapter.notifyItemRemoved(position); // Notify adapter about the removal
+                        Toast.makeText(this, "Log deleted automatically!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Failed to delete log automatically.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void goToDashboard() {
+        if (user != null) {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra("user", user); // Pass the user object to the DashboardActivity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear stack if needed
+            startActivity(intent);
+            finish(); // Finish current activity
+        } else {
+            Toast.makeText(this, "User info not found. Cannot navigate.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+
+
+
 }

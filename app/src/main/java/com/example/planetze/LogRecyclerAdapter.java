@@ -36,14 +36,19 @@ public class LogRecyclerAdapter extends RecyclerView.Adapter<LogRecyclerAdapter.
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String log = logs.get(position);
         holder.textViewLog.setText(log);
 
+        // Handle delete button click
         holder.deleteButton.setOnClickListener(v -> callback.onDeleteLog(position));
+
+        // Handle edit button click
         holder.editButton.setOnClickListener(v -> callback.onEditLog(position, log));
     }
+
 
     @Override
     public int getItemCount() {
